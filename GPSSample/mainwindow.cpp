@@ -12,7 +12,7 @@ enum TimeScaleIndex
     TSI_MAX
 };
 
-const QString gTimeScaleNames[TSI_MAX] = { "miliseconds", "seconds", "minutes" };
+const QString gTimeScaleNames[TSI_MAX] = { "milliseconds", "seconds", "minutes" };
 const int gTimeScaleValues[TSI_MAX] = { 1, 1000, 1000*60 };
 
 const int gTimePeriodDefaultValue = 1;

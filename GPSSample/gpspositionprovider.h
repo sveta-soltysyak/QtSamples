@@ -2,8 +2,8 @@
 #define GPSPOSITIONPROVIDER_H
 
 #include <QObject>
+#include <QGeoPositionInfoSource>
 
-class QGeoPositionInfoSource;
 class QGeoPositionInfo;
 
 class GPSPositionProvider : public QObject
@@ -15,9 +15,15 @@ public:
 public:
     void init(int interval = 0);
     void setTimerInterval(int interval);
+    void setPositioningMethods(QGeoPositionInfoSource::PositioningMethods methods);
+
+private:
+    void connectSlots();
 
 public slots:
     void onPositionUpdated(const QGeoPositionInfo &info);
+    void onEror(QGeoPositionInfoSource::Error positioningError);
+    void onUpdateTimeout();
 
 signals:
     void notifyPositionUpdated(const QGeoPositionInfo &info);

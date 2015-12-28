@@ -26,18 +26,19 @@ private:
     void initComboBox();
     void setDefaultValues();
     void connectSlots();
+    void initProvider();
 
 private:
     int getCurrentTimeInterval() const;
-
-signals:
-    void updateProviderTimerInterval(int interval);
 
 private slots:
    void onProviderPositionUpdated(const QGeoPositionInfo &info);
    void onProviderStatusUpdated(const QString &message);
 
    void on_pushButton_clicked();
+   void on_allRadioButton_toggled(bool checked);
+   void on_satelliteRadioButton_toggled(bool checked);
+   void on_nonSatelliteradioButton_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;

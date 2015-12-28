@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QGeoPositionInfo>
+#include <QGeoPositionInfoSource>
 
 
 enum TimeScaleIndex
@@ -21,7 +22,7 @@ const TimeScaleIndex gTimeScaleDefaultIndex = TSI_SEC;
 const int gSpinBoxDefaultMinValue = 0;
 const int gSpinBoxDefaultMaxValue = 10000;
 
-const QString gPositionStatusString = "Position updated:\nDate/time = %1\nCoordinate = %2";
+const QString &gPositionStatusString = "Position updated:\nDate/time = %1\nCoordinate = %2";
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -44,8 +45,7 @@ void MainWindow::init()
     setDefaultValues();
 
     connectSlots();
-    int interval = getCurrentTimeInterval();
-    mProvider.init(interval);
+    initProvider();
 }
 
 void MainWindow::initSpinBox()
@@ -77,6 +77,13 @@ void MainWindow::connectSlots()
             this, SLOT(onProviderStatusUpdated(QString)));
 }
 
+void MainWindow::initProvider()
+{
+    int interval = getCurrentTimeInterval();
+    mProvider.setPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
+    mProvider.init(interval);
+}
+
 int MainWindow::getCurrentTimeInterval() const
 {
     int timeValue = ui->spinBox->value();
@@ -105,4 +112,28 @@ void MainWindow::on_pushButton_clicked()
 {
     int interval = getCurrentTimeInterval();
     mProvider.setTimerInterval(interval);
+}
+
+void MainWindow::on_allRadioButton_toggled(bool checked)
+{
+    if (checked)
+    {
+        mProvider.setPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
+    }
+}
+
+void MainWindow::on_satelliteRadioButton_toggled(bool checked)
+{
+    if (checked)
+    {
+        mProvider.setPositioningMethods(QGeoPositionInfoSource::SatellitePositioningMethods);
+    }
+}
+
+void MainWindow::on_nonSatelliteradioButton_toggled(bool checked)
+{
+    if (checked)
+    {
+        mProvider.setPositioningMethods(QGeoPositionInfoSource::NonSatellitePositioningMethods);
+    }
 }
